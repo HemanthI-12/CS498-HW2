@@ -1,1 +1,18 @@
+The average latency for POST /register in the US instance was 93.67179870605469 ms. 
+The average latency for POST /register in the EU instance was 350.3121018409729 ms. 
+The average latency for GET /list in the US instance was 95.78591585159302 ms.
+The average latency for GET /list in the EU instance was 353.58606576919556 ms.
 
+My script for my eventual consistency experiment caught 0 misses out of 100 iterations. This 
+also still stayed the same at 300 iterations.
+
+The EU instance had significantly higher latency than the US instance. This makes a lot of sense
+because the EU instance is in Belgium while the US instance is in Iowa. This makes all the difference for latency because my datastore is in Iowa so the US instance is way closer to the datastore physically and so the network time to go to the database and come back is much smaller than when my instance in Belgium attempts to communicate with the Iowa datastore. 
+
+In the eventual consistency experiment, I observed 0 misses out of 100 or 300 iterations when 
+writing in the US instance and immediatley reading from the EU instance. This indicates and 
+provides strong evidence that this database has strong consistency because the replication 
+between regions was so fast that even my instance in Europe was able to read the update done 
+immediately before the read. This is consistent with the default behavior of Firestore and shows 
+how powerful strong consistency is and how helpful it is for applications that could be based 
+around the world.
