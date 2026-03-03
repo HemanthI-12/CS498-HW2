@@ -1,7 +1,20 @@
-I wrote a scripin python that I ran locally using the requests library to measure endpoint latency and observe eventual consistency between the europe-west1 and us-central1 instances/ 
+I wrote a scripin python that I ran locally using the requests library to measure endpoint 
+latency and observe eventual consistency between the europe-west1 and us-central1 instances/ 
 
-I stored the urls of the US instance http://34.173.10.95:8080 and EU instance http://34.78.110.139:8080. 
+I stored the urls of the US instance http://34.173.10.95:8080 and EU instance 
+http://34.78.110.139:8080. 
 
-To measure latency I measured each /register and /list seperately for each instance. I first send a POST request to /clear to make sure to only track the current additions to the database. The time is measured then with time.time() before and after to get total elapsed time and convert it to milliseconds for ease in interpreting. Then for US and EU my script sends in 20 request to POST /register with usernames and records the time for each request in a list. The script then sends 20 requests to GET /list and records the time for each request in a seperate request. So there are four lists now. At the end it sums all entries in the list and divides by lenght of list to get the four averages for latency for /register and /list on both VMs.
+To measure latency I measured each /register and /list seperately for each instance. 
+I first send a POST request to /clear to make sure to only track the current additions to the
+database. The time is measured then with time.time() before and after to get total elapsed time
+and convert it to milliseconds for ease in interpreting. Then for US and EU my script sends in 
+20 request to POST /register with usernames and records the time for each request in a list. The
+script then sends 20 requests to GET /list and records the time for each request in a seperate 
+request. So there are four lists now. At the end it sums all entries in the list and divides by 
+length of list to get the four averages for latency for /register and /list on both VMs.
 
-The rest of the script ran the for loop for observing eventual consistency. It runs for 100 times and each time it generates a unique username to send POST /register to US instance and immediately calls GET /list in EU instnace to check if the new entry is visible in the returned list. It keeps track of all misses and reports at the end. I played with this implementation to see if I could find how many iterations it would take for it to break and give a miss.
+The rest of the script ran the for loop for observing eventual consistency. It runs for 100
+times and each time it generates a unique username to send POST /register to US instance and 
+immediately calls GET /list in EU instnace to check if the new entry is visible in the returned 
+list. It keeps track of all misses and reports at the end. I played with this implementation to 
+see if I could find how many iterations it would take for it to break and give a miss.
